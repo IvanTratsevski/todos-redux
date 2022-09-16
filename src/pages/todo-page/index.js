@@ -1,55 +1,29 @@
-import React, { useState, useCallback } from "react";
-import { UserInput } from '../../components/user-input';
-import { TodoList } from '../../components/todo-list';
-import { TodoFilter } from '../../components/todo-filter';
-import styles from './index.module.css';
+import React, { useEffect, useRef } from "react";
+import { UserInput } from "../../components/user-input";
+import { TodoList } from "../../components/todo-list";
+import { TodoFilter } from "../../components/todo-filter";
+import { storeTodos } from "../../utils/storeTodos";
+import { useDispatch } from "react-redux";
+import { loadTodos } from "../../redux/actions/async-actions";
+import styles from "./index.module.css";
 
 export const TodoPage = () => {
-    const [todos, setTodos] = useState([]);
+  const todoInputRef = useRef();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(loadTodos());
+  }, [])
 
 
-    const todoAdd = (todoText) => {
-        const todo = {
-            todoText,
-            done: false,
-            id: Math.random().toString()
-        };
-      
-        setTodos((todos) => [...todos, todo]);
-    };
-
-    const todoDelete = (todoIdToDelete) => {
-        setTodos((prevTodos) => prevTodos.filter(({id}) => id !== todoIdToDelete));
-    };
-
-    const todoStatusSwitch = (todoIdToChange) => {
-        setTodos((prevTodos) => {
-            const changedTodos = prevTodos.map(({id, done, ...todo}) => ({
-                ...todo,
-                id,
-                done: id === todoIdToChange ? !done : done
-            }));
-
-            return changedTodos;
-        });
-    };
-
-    const onTodoStatusSwitch = useCallback(todoStatusSwitch, [setTodos]);
-    const onTodoDelete = useCallback(todoDelete, [setTodos]);
-
-    return (
+  return (
     <div className={styles.wrapper}>
-        <div className={styles.leftSide}>
-            <UserInput onTodoAdd={todoAdd} />
-        </div>
-        <div className={styles.rightSide}>
-            <TodoFilter/>
-            <TodoList 
-                todos={todos}
-                onTodoStatusChange={onTodoStatusSwitch}
-                onTodoDelete={onTodoDelete}
-            />           
-        </div>       
+      <div className={styles.leftSide}>
+        <UserInput />
+      </div>
+      <div className={styles.rightSide}>
+        <TodoFilter />
+        <TodoList />
+      </div>
     </div>
-    )
+  );
 };

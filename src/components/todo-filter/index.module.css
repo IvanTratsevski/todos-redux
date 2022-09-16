@@ -4,27 +4,3 @@
     justify-content: center;
     padding: 20px;
 }
-
-.wrapper > button {
-    width: 100px;
-    border-radius: 0;
-    padding: 5px 0;
-    border: 1px solid lightgray;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    color: #2d2d2d;
-}
-
-button.active {
-    background-color: #787777 ;
-    color: #fff;
-    border-color: #787777;
-}
-
-.wrapper > button:last-child {
-    border-radius: 0 6px 6px 0;
-}
-
-.wrapper > button:first-child {
-    border-radius: 6px 0 0 6px;
-}

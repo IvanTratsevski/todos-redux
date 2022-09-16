@@ -2,6 +2,7 @@
     display: flex;
     height: 100%;
     align-items: stretch;
+    background-color: #f1f2f3;
 }
 
 .leftSide {

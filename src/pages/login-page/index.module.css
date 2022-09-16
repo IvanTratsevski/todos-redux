@@ -1,0 +1,54 @@
+.wrapper {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('https://www.wallpaperup.com/uploads/wallpapers/2012/09/24/16230/a551368ba082aa22cc38fc0cc975961a.jpg');
+    background-size: cover;
+}
+
+.content {
+    border-radius: 6px;
+    background-color: darkcyan;
+    max-width: 400px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    padding: 50px;
+    box-shadow: 4px 4px 8px rgba(0,0,0,0.4);
+}
+
+.title {
+    margin-bottom: 20px;
+    font-size: 40px;
+    color: #fff;
+}
+
+.input {
+    margin-bottom: 32px;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+    padding: 8px;
+    font-size: 20px;
+}
+
+.btn {
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 20px;
+    margin-top: 44px;
+    background-color: #AFA6B7;
+    transition: all 0.5s ease;
+}
+
+.btn:hover {
+    background-color: #C4719B;
+    color: #fff;
+}

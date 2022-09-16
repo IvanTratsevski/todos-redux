@@ -20,6 +20,14 @@
     fill: lightgray;
 }
 
+.input {
+    border: none;
+    border-radius: 6px;
+    background-color: lightgray;
+    outline: none;
+    padding: 5px;
+}
+
 .todoStatus:hover {
     fill: darkgray;
 }
@@ -33,11 +41,17 @@
 }
 
 .deleteIcon {
-    cursor: pointer;
-    vertical-align: middle;
     fill: lightgray;
 }
 
 .deleteIcon:hover {
     fill: lightcoral;
+}
+
+.pencilIcon {
+    fill: lightgray;
+}
+
+.checkIcon {
+    fill: darkcyan;
 }
