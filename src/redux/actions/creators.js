@@ -4,12 +4,12 @@ import { bindActionCreators } from "redux";
 import { store } from "../index";
 import { type } from "@testing-library/user-event/dist/type";
 
-const addTodo = (todoText) => ({
-  type: TODO.TODO_ADD,
-  payload: {
-    todoText,
-  },
-});
+// const addTodo = (todoText) => ({
+//   type: TODO.TODO_ADD,
+//   payload: {
+//     todoText,
+//   },
+// });
 
 const deleteTodo = (id) => ({
   type: TODO.TODO_DELETE,
@@ -35,13 +35,20 @@ const setFilter = (filterType) => ({
   type: TODO.TODO_FILTER,
   payload: { filterType },
 });
+const setAuthError = () => ({
+  type: USER.USER_ERROR,
+  payload: {
+    authError: null,
+  },
+});
 export default bindActionCreators(
   {
-    addTodo,
+    // addTodo,
     deleteTodo,
     editTodo,
     todoStatusChange,
     setFilter,
+    setAuthError,
   },
   store.dispatch
 );

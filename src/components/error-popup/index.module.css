@@ -1,0 +1,42 @@
+.wrapper {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 100;
+  background-color: rgba(128, 128, 128, 0.553);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.popup {
+  border-radius: 6px;
+  background-color: darkcyan;
+  max-width: 400px;
+  text-align: center;
+  padding: 50px;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.4);
+  font-size: 20px;
+  color: #fff;
+}
+.errorTitle {
+  font-size: 30px;
+}
+.closeBtn {
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #fff;
+  font-size: 20px;
+  margin-top: 20px;
+  background-color: #afa6b7;
+  transition: all 0.5s ease;
+}
+.closeBtn:hover {
+  background-color: #c4719b;
+  color: #fff;
+}
+.alertIcon {
+  color: rgb(255, 107, 107);
+  margin: 0 15px 0 15px;
+}

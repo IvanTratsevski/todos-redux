@@ -1,7 +1,17 @@
 import { TODOS } from "../../constants";
 import { TODO, USER } from "./types";
-import { auth } from "../../firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../../firebase";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
+import { setDoc, doc } from "firebase/firestore";
+import { getTodos } from "../selectors";
+const USER_AUTH_CONFIG = {
+  register: createUserWithEmailAndPassword,
+  signin: signInWithEmailAndPassword,
+};
 export const loadTodos = () => {
   return (dispatch) => {
     dispatch({
@@ -30,26 +40,66 @@ export const loadTodos = () => {
       });
   };
 };
-export const createUser = (email, password) => {
+export const userAuth = (email, password, type, afterAuth) => {
   return (dispatch) => {
-    createUserWithEmailAndPassword(auth, email, password)
+    USER_AUTH_CONFIG[type](auth, email, password)
       .then((userCredential) => {
-        // Signed in
         const user = userCredential.user;
-        // console.log(user);
         dispatch({
           type: USER.USER_REGISTER,
           payload: {
             currentUser: user,
           },
         });
-        // console.log(user.email);
-        // ...
+        afterAuth && afterAuth();
+        return user;
+      })
+      .then((user) => {
+        return setDoc(doc(db, "users", user.uid), {
+          todos: {},
+        });
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ..
+        dispatch({
+          type: USER.USER_ERROR,
+          payload: {
+            authError: error,
+          },
+        });
       });
+  };
+};
+export const userLogOut = () => {
+  return (dispatch) => {
+    signOut(auth)
+      .then(() => {
+        dispatch({
+          type: USER.USER_LOGOUT,
+          payload: "",
+        });
+      })
+      .catch((error) => {});
+  };
+};
+export const addTodo = (todoText) => {
+  return (dispatch, getState) => {
+    const {
+      user: { user: uid },
+    } = getState();
+    // const newTodoId = todos.at(-1)?.id + 1;
+    const todo = {
+      todoText,
+      done: false,
+    };
+    setDoc(db.collection("users").doc(uid).collection("todos"), {
+      todoText,
+      done: false,
+    });
+    dispatch({
+      type: TODO.TODO_ADD,
+      payload: {
+        todo,
+      },
+    });
   };
 };

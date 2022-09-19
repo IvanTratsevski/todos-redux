@@ -1,8 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Validation } from "../../compound/validation";
 import { VALIDATION_TYPE } from "../../utils/validate";
 import { validate } from "../../utils/validate";
 import { useNavigate, Link } from "react-router-dom";
+import { userAuth } from "../../redux/actions/async-actions";
+import { useDispatch, useSelector } from "react-redux";
+import { getAuthError, getCurrentUser } from "../../redux/selectors";
+import { UserInfo } from "../../components/user-info";
+import { ErrorPopup } from "../../components/error-popup";
 import styles from "./index.module.css";
 
 const { ONLY_NUMBERS, NO_SPACES, ONE_UPPERCASE, ONE_SPEC_SYMBOL } =
@@ -12,13 +17,21 @@ const loginConfig = [ONLY_NUMBERS, NO_SPACES];
 const passwordConfig = [ONE_UPPERCASE, ONE_SPEC_SYMBOL, NO_SPACES];
 
 export const LoginPage = () => {
+  const { currentUser } = useSelector(getCurrentUser);
+  const authError = useSelector(getAuthError);
   const [loginError, setLoginError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [loginText, setLoginText] = useState("");
   const [passwordText, setPasswordText] = useState("");
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    if (currentUser) {
+      navigate("/todos");
+    }
+  }, [navigate, currentUser]);
   const clickHandler = () => {
     const loginError = validate(loginText, loginConfig);
     const passwordError = validate(passwordText, passwordConfig);
@@ -27,7 +40,11 @@ export const LoginPage = () => {
     setPasswordError(passwordError);
 
     if (!loginError && !passwordError) {
-      navigate("/todos");
+      dispatch(
+        userAuth(loginText, passwordText, "signin", () => {
+          // navigate("/todos");
+        })
+      );
     }
   };
 
@@ -41,6 +58,7 @@ export const LoginPage = () => {
 
   return (
     <div className={styles.wrapper}>
+      {authError && <ErrorPopup />}
       <div className={styles.content}>
         <h1 className={styles.title}>Please log in</h1>
         <div>

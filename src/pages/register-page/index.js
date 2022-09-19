@@ -3,10 +3,12 @@ import { Validation } from "../../compound/validation";
 import { VALIDATION_TYPE } from "../../utils/validate";
 import { validate } from "../../utils/validate";
 import { useNavigate } from "react-router-dom";
-import { registerUser } from "../../firebase";
-import { createUser } from "../../redux/actions/async-actions";
-import styles from "./index.module.css";
+import { userAuth } from "../../redux/actions/async-actions";
 import { useDispatch } from "react-redux";
+import { ErrorPopup } from "../../components/error-popup";
+import styles from "./index.module.css";
+import { useSelector } from "react-redux";
+import { getAuthError } from "../../redux/selectors";
 
 const { ONLY_NUMBERS, NO_SPACES, ONE_UPPERCASE, ONE_SPEC_SYMBOL } =
   VALIDATION_TYPE;
@@ -15,6 +17,7 @@ const loginConfig = [ONLY_NUMBERS, NO_SPACES];
 const passwordConfig = [ONE_UPPERCASE, ONE_SPEC_SYMBOL, NO_SPACES];
 
 export const RegisterPage = () => {
+  const authError = useSelector(getAuthError);
   const [loginError, setLoginError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [loginText, setLoginText] = useState("");
@@ -26,12 +29,17 @@ export const RegisterPage = () => {
   const clickHandler = () => {
     const loginError = validate(loginText, loginConfig);
     const passwordError = validate(passwordText, passwordConfig);
-
+    const passwordConfirmError = 
+    passwordText !== passwordConfirmText
+      ? "Please enter equal passwords"
+      : validate(passwordConfirmText, passwordConfig);
     setLoginError(loginError);
     setPasswordError(passwordError);
-    dispatch(createUser(loginText, passwordText));
-    // getCurrentUser();
-    if (!loginError && !passwordError) {
+    setPasswordConfirmError(passwordConfirmError);
+    if (!loginError && !passwordError && !passwordConfirmError) {
+      dispatch(userAuth(loginText, passwordText, 'register', () => {
+        navigate("/todos");
+      }));
     }
   };
 
@@ -42,10 +50,14 @@ export const RegisterPage = () => {
   const passwordChangeHandler = ({ target: { value } }) => {
     setPasswordText(value);
   };
+  const passwordConfirmTextHandler = ({ target: { value } }) => {
+    setPasswordConfirmText(value);
+  };
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.content}>
+      {authError && <ErrorPopup/>}
+        <div className={styles.content}>
         <h1 className={styles.title}>Register</h1>
         <div>
           <Validation error={loginError}>
@@ -68,12 +80,12 @@ export const RegisterPage = () => {
           </Validation>
         </div>
         <div>
-          <Validation error={passwordError}>
+          <Validation error={passwordConfirmError}>
             <input
               className={styles.input}
               type="password"
-              value={passwordText}
-              onChange={passwordChangeHandler}
+              value={passwordConfirmText}
+              onChange={passwordConfirmTextHandler}
             />
           </Validation>
         </div>

@@ -1,5 +1,6 @@
 import { USER } from "../actions/types";
 const initialState = {
+  authError: null,
   isLoggedIn: false,
   currentUser: null,
   uId: null,
@@ -16,23 +17,32 @@ export const userReducer = (state = initialState, action) => {
         isLoggedIn: true,
         uId: action.payload.currentUser.uid,
         uEmail: action.payload.currentUser.email,
+        authError: null,
       };
     case USER.USER_LOGIN:
       return {
         ...state,
-        currentUser: action.currentUser,
+        currentUser: action.payload.currentUser,
         isLoggedIn: true,
-        uId: action.currentUser.uid,
-        uEmail: action.currentUser.email,
+        uId: action.payload.currentUser.uid,
+        uEmail: action.payload.currentUser.email,
+        authError: null,
       };
     case USER.USER_LOGOUT:
       return {
         ...state,
         isLoggedIn: false,
+        currentUser: null,
         uId: null,
         uEmail: null,
         uName: null,
+        authError: null
       };
+    case USER.USER_ERROR:
+      return {
+        ...state,
+        authError: action.payload.authError,
+      }
     default:
       return state;
   }

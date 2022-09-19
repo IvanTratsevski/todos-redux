@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import actions from "../redux/actions/creators";
-import { createUser } from "../redux/actions/async-actions";
+import { userAuth } from "../redux/actions/async-actions";
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -19,6 +19,7 @@ export const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
+export const db = getFirestore(app);
 const { setCurrentUser } = actions;
 export const registerUser = (email, password) => {
   createUserWithEmailAndPassword(auth, email, password)

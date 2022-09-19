@@ -4,7 +4,8 @@ export const getTodos = (state) => state.todos.todos;
 export const getFilter = (state) => state.todos.todosFilter;
 export const getIsLoading = (state) => state.todos.isLoading;
 export const getIsLoggedIn = (state) => state.user.isLoggedIn;
-export const getCurrentUser = (state) => state.user.currentUser;
+export const getAuthError = (state) => state.user.authError;
+export const getCurrentUser = (state) => state.user;
 export const getTodosByFilter = createSelector(
   getTodos,
   getFilter,

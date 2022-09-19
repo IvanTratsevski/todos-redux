@@ -22,17 +22,17 @@ export const todoReducer = (state = initialState, action) => {
     case TODO.TODO_FETCH_COMPLETE:
       return {
         ...state,
-        todos: action.payload.todos.map(({id, title, completed}) => ({
+        todos: action.payload.todos.map(({ id, title, completed }) => ({
           id: id,
           done: completed,
-          todoText: title
-        }))
-      }
+          todoText: title,
+        })),
+      };
     case TODO.TODO_LOADING:
       return {
         ...state,
-        isLoading: action.payload.isLoading
-      }
+        isLoading: action.payload.isLoading,
+      };
     case TODO.TODO_DELETE:
       return {
         ...state,
@@ -48,15 +48,9 @@ export const todoReducer = (state = initialState, action) => {
         })),
       };
     case TODO.TODO_ADD:
-      const todo = {
-        todoText: action.payload.todoText,
-        done: false,
-        id: Math.random().toString(),
-      };
-
       return {
         ...state,
-        todos: [...state.todos, todo],
+        todos: [...state.todos, action.payload.todo],
       };
     case TODO.TODO_EDIT:
       return {
